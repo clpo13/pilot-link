@@ -39,7 +39,7 @@
 	}
 }
 
-%typemap (python,argout) (pi_buffer_t *) {
+%typemap (argout) (pi_buffer_t *) {
 	if ($1) {
 		PyObject *o1 = Py_BuildValue("s#", $1->data, $1->used);
 		$result = t_output_helper($result, o1);
@@ -58,7 +58,7 @@
     $1 = &temp;
 %}
 
-%typemap (python,argout) struct DBInfo *OUTPUT %{
+%typemap (argout) struct DBInfo *OUTPUT %{
     if ($1) $result = t_output_helper($result, PyObjectFromDBInfo($1));
 %}
 
@@ -66,7 +66,7 @@
 // Type/creator strings
 // a generic 4-character string type, for use as a type or creator ID
 // ------------------------------------------------------------------
-%typemap (python,in) unsigned long STR4 {
+%typemap (in) unsigned long STR4 {
 	if (!($input) || ($input == Py_None)) {
 		$1 = 0;
 	} else {
@@ -78,7 +78,7 @@
 	}
 }
 
-%typemap (python,in) long STR4 {
+%typemap (in) long STR4 {
 	if (!($input) || ($input == Py_None)) {
 		$1 = 0;
 	} else {
@@ -90,7 +90,7 @@
 	}
 }
 
-%typemap (python,argout) unsigned long *OUTSTR4 {
+%typemap (argout) unsigned long *OUTSTR4 {
 	if ($1) {
 		PyObject *o = PyString_FromStringAndSize(printlong(*$1), 4);
 		$result = t_output_helper($result, o);
