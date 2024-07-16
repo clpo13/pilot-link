@@ -20,20 +20,21 @@ AC_DEFUN([AM_CHECK_PYTHON],
                 AC_PATH_PROG(PYTHON, python)
 
                 if test "$PYTHON" != ""; then
-                        PYTHON_VERSION=$($PYTHON -c "import sys; print(sys.version[[0:3]])")
+                        PYTHON_VERSION=$($PYTHON -c "import sysconfig; print(sysconfig.get_python_version())")
                         PYTHON_PREFIX=$($PYTHON -c "import sys; print(sys.prefix)")
                 fi
 
                 AC_MSG_CHECKING(for Python.h)
 
                 PYTHON_EXEC_PREFIX=$($PYTHON -c "import sys; print(sys.exec_prefix)")
+                PYTHON_LIBPL=$($PYTHON -c "import sysconfig; print(sysconfig.get_config_var('LIBPL'))")
 
                 if test "$PYTHON_VERSION" != ""; then 
                         if test -f $PYTHON_PREFIX/include/python$PYTHON_VERSION/Python.h; then 
                         AC_MSG_RESULT($PYTHON_PREFIX/include/python$PYTHON_VERSION/Python.h)
-                                PYTHON_LIB_LOC="-L$PYTHON_EXEC_PREFIX/lib/python$PYTHON_VERSION/config"
+                                PYTHON_LIB_LOC="-L$PYTHON_LIBPL"
                                 PYTHON_CFLAGS="-I$PYTHON_PREFIX/include/python$PYTHON_VERSION"
-                                PYTHON_MAKEFILE="$PYTHON_EXEC_PREFIX/lib/python$PYTHON_VERSION/config/Makefile"
+                                PYTHON_MAKEFILE="$PYTHON_LIBPL/Makefile"
 
                                 PYTHON_LOCALMODLIBS=$(sed -n -e 's/^LOCALMODLIBS=\(.*\)/\1/p' $PYTHON_MAKEFILE)
                                 PYTHON_BASEMODLIBS=$(sed -n -e 's/^BASEMODLIBS=\(.*\)/\1/p' $PYTHON_MAKEFILE)
