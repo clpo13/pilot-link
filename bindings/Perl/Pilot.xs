@@ -47,6 +47,10 @@
 
 #include "const-c.inc"
 
+#define sv_undef PL_sv_undef
+#define sv_yes   PL_sv_yes
+#define sv_no    PL_sv_no
+#define na       PL_na
 
 typedef unsigned char * CPTR;
 
